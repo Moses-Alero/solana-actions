@@ -1,4 +1,4 @@
-package types
+package main
 
 import (
 	"net/url"
@@ -6,20 +6,38 @@ import (
 	"github.com/blocto/solana-go-sdk/common"
 )
 
+// @internal
+type SupportedProtocol string
+
 const (
-	SOLANA_PAY_PROTOCOL = "solana:"
+	SOLANA_PAY_PROTOCOL SupportedProtocol = "solana"
 
-	SOLANA_ACTIONS_PROTOCOL = "solana-action:"
+	SOLANA_ACTIONS_PROTOCOL SupportedProtocol = "solana-action"
 
-	SOLANA_ACTIONS_PROTOCOL_PLURAL = "solana-actions:"
+	SOLANA_ACTIONS_PROTOCOL_PLURAL SupportedProtocol = "solana-actions"
 
-	HTTPS_PROTOCOL = "https:"
+	HTTPS_PROTOCOL = "https"
 
 	//Program Id for the SPL Memo program
 	MEMO_PROGRAM_ID = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
 
 	BLINKS_QUERY_PARAM = "action"
 )
+
+var SupportedProtocols = []SupportedProtocol{
+	SOLANA_ACTIONS_PROTOCOL,
+	SOLANA_PAY_PROTOCOL,
+	SOLANA_ACTIONS_PROTOCOL_PLURAL,
+}
+
+func (sp SupportedProtocol) IsValidProtocol() bool {
+	for _, protocol := range SupportedProtocols {
+		if sp == protocol {
+			return true
+		}
+	}
+	return false
+}
 
 /*
 Standard headers
@@ -36,24 +54,6 @@ type Reference common.PublicKey
 
 // `memo` in the [Solana Actions spec](https://github.com/solana-labs/solana-pay/blob/master/SPEC.md#memo)
 type Memo string
-
-// @internal
-type SupportedProtocol string
-
-var SupportedProtocols = []SupportedProtocol{
-	SOLANA_ACTIONS_PROTOCOL,
-	SOLANA_PAY_PROTOCOL,
-	SOLANA_ACTIONS_PROTOCOL_PLURAL,
-}
-
-func (sp SupportedProtocol) IsValidProtocol() bool {
-	for _, protocol := range SupportedProtocols {
-		if sp == protocol {
-			return true
-		}
-	}
-	return false
-}
 
 type ActionsJson struct {
 	Rules []ActionRuleObject
@@ -72,7 +72,7 @@ Fields of a Solana Action transaction request URL.
 */
 type ActionRequestURLFields struct {
 	//`link` in the Solana Action spec
-	Link url.URL
+	Link *url.URL
 
 	//`label` in the Solana Action spec
 	Label *string `json:"label,omitempty"`
@@ -86,7 +86,7 @@ type ActionRequestURLFields struct {
  */
 type BlinkURLFields struct {
 	//base URL for the `blink` in the Solana Action spec
-	Blink url.URL
+	Blink *url.URL
 
 	//`action` passed via the blink `action` query param
 	Action ActionRequestURLFields
