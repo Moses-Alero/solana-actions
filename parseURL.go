@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-// Thrown when a URL cant be parsed as a Solana Action URL
+// Thrown when a URL can't be parsed as a Solana Action URL
 type ParseUrlError struct {
 	Message string
 }
@@ -70,15 +70,16 @@ func parseBlinksURL(blink *url.URL) (*BlinkURLFields, error) {
 	}
 	parsedUrl, err := ParseURL(linkUrl)
 
+	if err != nil {
+		return nil, &ParseUrlError{err.Error()}
+	}
+
 	action, ok := parsedUrl.(*ActionRequestURLFields)
 
 	if !ok {
 		return nil, ParseUrlError{"invalid action type"}
 	}
 
-	if err != nil {
-		return nil, &ParseUrlError{err.Error()}
-	}
 	blinkUrlFields := &BlinkURLFields{
 		Blink:  blink,
 		Action: *action,

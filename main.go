@@ -8,7 +8,8 @@ import (
 
 func main() {
 	fmt.Println("This is my implementation of solana actions ink")
-	urlString := "solana-action:https://actions.alice.com/donate?alice=wonderland&bob=the_builder" // "https://example.domain?action=solana-action%3Ahttps%3A%2F%2Factions.alice.com%2Fdonate"
+	urlString := "solana-action:https://actions.alice.com/donate?alice=wonderland&bob=the_builder"
+	// "https://example.domain?action=solana-action%3Ahttps%3A%2F%2Factions.alice.com%2Fdonate"
 
 	// Parse the URL string into a *url.URL struct
 	parsedURL, err := url.Parse(urlString)
@@ -26,11 +27,12 @@ func main() {
 	action, ok := val.(*ActionRequestURLFields)
 	if ok {
 		//do action url stuff
-		fmt.Println("1", action.Link)
-		_, err := EncodeUrl(action, SOLANA_ACTIONS_PROTOCOL)
+
+		url, err := EncodeUrl(action, SOLANA_ACTIONS_PROTOCOL)
 		if err != nil {
 			fmt.Println(err)
 		}
+		fmt.Println(url.String())
 	}
 
 	blink, ok := val.(*BlinkURLFields)
