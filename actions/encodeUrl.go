@@ -1,4 +1,4 @@
-package main
+package actions
 
 import (
 	"fmt"
@@ -27,7 +27,7 @@ func EncodeUrl(fields any, protocol SupportedProtocol) (*url.URL, error) {
 		return encodeBlinkUrl(blinkUrlFields, protocol)
 	}
 
-	return nil, &EncodedUrlError{"invalid field type, must be of type ActionRequestURLFields or BlinkUrlFields"}
+	return nil, &EncodedUrlError{"invalid field type, must be of type *ActionRequestURLFields or *BlinkUrlFields"}
 
 }
 
@@ -48,12 +48,15 @@ func encodeActionRequestUrl(fields *ActionRequestURLFields, protocol SupportedPr
 		return nil, err
 	}
 	if fields.Label != nil {
-		URL.Query().Set("label", *fields.Label)
+		queryParams := URL.Query()
+		queryParams.Set("label", *fields.Label)
+		URL.RawQuery = queryParams.Encode()
 	}
 	if fields.Message != nil {
-		URL.Query().Set("message", *fields.Message)
+		queryParams := URL.Query()
+		queryParams.Set("message", *fields.Message)
+		URL.RawQuery = queryParams.Encode()
 	}
-
 	return URL, nil
 }
 
@@ -65,9 +68,11 @@ func encodeBlinkUrl(fields *BlinkURLFields, protocol SupportedProtocol) (*url.UR
 	if err != nil {
 		return nil, err
 	}
-
 	actionUrl, err := encodeActionRequestUrl(&fields.Action, protocol)
+
 	encodedUri := url.QueryEscape(actionUrl.String())
-	URL.Query().Set(BLINKS_QUERY_PARAM, encodedUri)
-	return nil, nil
+	queryParams := URL.Query()
+	queryParams.Set(BLINKS_QUERY_PARAM, encodedUri)
+	URL.RawQuery = queryParams.Encode()
+	return URL, nil
 }

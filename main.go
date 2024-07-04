@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-
 	"net/url"
+	"solana-actions/actions"
 )
 
 func main() {
@@ -19,30 +19,29 @@ func main() {
 	}
 
 	// Get the protocol (scheme) of the URL
-	val, err := ParseURL(parsedURL)
+	val, err := actions.ParseURL(parsedURL)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	action, ok := val.(*ActionRequestURLFields)
+	action, ok := val.(*actions.ActionRequestURLFields)
 	if ok {
 		//do action url stuff
 
-		url, err := EncodeUrl(action, SOLANA_ACTIONS_PROTOCOL)
+		url, err := actions.EncodeUrl(action, actions.SOLANA_ACTIONS_PROTOCOL)
 		if err != nil {
 			fmt.Println(err)
 		}
 		fmt.Println(url.String())
 	}
 
-	blink, ok := val.(*BlinkURLFields)
+	blink, ok := val.(*actions.BlinkURLFields)
 	if ok {
 		//do blinks url stuff
 		fmt.Println(blink.Action.Link)
-		_, err := EncodeUrl(blink, SOLANA_ACTIONS_PROTOCOL)
+		_, err := actions.EncodeUrl(blink, actions.SOLANA_ACTIONS_PROTOCOL)
 		if err != nil {
 			fmt.Println(err)
 		}
 	}
-
 }
