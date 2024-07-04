@@ -22,7 +22,7 @@ func TestEncodeURL(t *testing.T) {
 				t.Log("err should be nil", err)
 				t.Fail()
 			}
-			if URL.String() != "solana-action:"+link.String() {
+			if URL.String() != "solana-action:"+rawUrl {
 				t.Errorf("got %s want %s", URL.String(), "solana-action:"+rawUrl)
 				t.Fail()
 			}

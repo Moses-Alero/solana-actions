@@ -8,7 +8,7 @@ import (
 
 func main() {
 	fmt.Println("This is my implementation of solana actions ink")
-	urlString := "solana-action:https://actions.alice.com/donate?alice=wonderland&bob=the_builder"
+	urlString := "solana-action:https://actions.alice.com/donate?label=wonderland&message=the_builder"
 	// "https://example.domain?action=solana-action%3Ahttps%3A%2F%2Factions.alice.com%2Fdonate"
 
 	// Parse the URL string into a *url.URL struct
