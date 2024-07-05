@@ -18,15 +18,16 @@ func (e *FindReferenceError) Error() string {
 }
 
 /*
- * Find the oldest transaction signature referencing a given public key.
- *
- * @param connection - A connection to the cluster.
- * @param reference - `reference` in the Solana Action spec.
- * @param options - Options for `getSignaturesForAddress`.
- *
- * @throws {FindReferenceError}
- */
+Find the oldest transaction signature referencing a given public key.
 
+@param connection - A connection to the cluster.
+
+@param reference - `reference` in the Solana Action spec.
+
+@param options - Options for `getSignaturesForAddress`.
+
+@throws {FindReferenceError}
+*/
 func FindReference(connection *client.Client, reference Reference, options *client.GetSignaturesForAddressConfig) (*rpc.SignatureWithStatus, error) {
 	signatures, err := connection.GetSignaturesForAddress(context.Background(), reference.String())
 	if err != nil {
