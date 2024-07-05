@@ -24,9 +24,9 @@ func TestFindTxSig(t *testing.T) {
 	t.Run("findTransactionSignature", func(t *testing.T) {
 		t.Run("should return last signature", func(t *testing.T) {
 			sig, err := actions.FindReference(c, reference, nil)
-			// t.Log(val)
 			if err != nil {
-				t.Errorf("err should not be nil: %s", err.Error())
+				t.Errorf("err should be nil: %s", err.Error())
+				t.Fail()
 			}
 			expected := "3DMBLgCQSLdurScFUCPaHy8anCpYkFVaCnAENGvpyeidfUpcDoDjvK5pSVHPkUg8L1qLcnKj6fs7p677ZRiLP37f"
 			if sig.Signature != expected {
