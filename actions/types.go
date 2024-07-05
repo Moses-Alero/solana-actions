@@ -52,6 +52,11 @@ var ACTIONS_CORS_HEADERS = map[string]string{
 // `reference` in the [Solana Actions spec](https://github.com/solana-labs/solana-pay/blob/master/SPEC.md#reference)
 type Reference common.PublicKey
 
+func (ref Reference) String() string {
+	return common.PublicKey(ref).String()
+
+}
+
 // `memo` in the [Solana Actions spec](https://github.com/solana-labs/solana-pay/blob/master/SPEC.md#memo)
 type Memo string
 
